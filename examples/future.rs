@@ -13,6 +13,7 @@ impl Future for Delay {
     type Output = &'static str;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        println!("poll");
         if Instant::now() >= self.when {
             println!("Done!");
             Poll::Ready("Done")
@@ -23,6 +24,7 @@ impl Future for Delay {
     }
 }
 
+#[allow(unused)]
 fn future_executer_example() {
     let when = Instant::now() + Duration::from_millis(10);
 
@@ -50,7 +52,7 @@ fn future_executer_example() {
 
 #[tokio::main]
 async fn main() {
-    future_executer_example();
+    // future_executer_example();
 
     let when = Instant::now() + Duration::from_millis(10);
     let future = Delay { when };
@@ -59,6 +61,7 @@ async fn main() {
     assert_eq!(out, "Done");
 }
 
+#[allow(dead_code)]
 enum MainFuture {
     // Initialized, never polled
     State0,
