@@ -1,7 +1,7 @@
-use tokio::sync::oneshot;
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
+use tokio::sync::oneshot;
 
 #[tokio::main]
 async fn main() {
@@ -26,7 +26,6 @@ async fn main() {
     }
 }
 
-
 #[allow(dead_code)]
 struct MySelect {
     rx1: oneshot::Receiver<&'static str>,
@@ -48,5 +47,26 @@ impl Future for MySelect {
         }
 
         Poll::Pending
+    }
+}
+
+#[allow(unused)]
+#[tokio::main]
+async fn ome_more_example() {
+    let (mut tx, mut rx) = tokio::sync::mpsc::channel::<i32>(128);
+
+    let operation = async {};
+
+    tokio::pin!(operation);
+
+    loop {
+        tokio::select! {
+            _ = &mut operation => break,
+            Some(v) = rx.recv() => {
+                if v % 2 == 0 {
+                    break;
+                }
+            }
+        }
     }
 }
